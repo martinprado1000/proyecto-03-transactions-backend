@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  Proyecto_03-Transactions:
+    depends_on:
+      - db
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: Proyecto_03-Transactions
+    container_name: Proyecto_03-Transactions
+    restart: always # reiniciar el contenedor si se detiene
+    ports:
+      - "${PORT}:${PORT}"
+    # working_dir: /var/www/pokedex
+    environment:
+      #MONGODB: ${MONGODB}
+      DATABASE_URI: ${DATABASE_URI}
+      PORT: ${PORT}
+      #DEFAULT_LIMIT: ${DEFAULT_LIMIT}
+      PAGINATIOS_DEFAULT_LIMIT: ${PAGINATIOS_DEFAULT_LIMIT}
+    # volumes:
+    #   - ./:/var/www/pokedex
+
+  db: 
+    image: mongo:5.0.0
+    container_name: db_mongo_prod
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: db_mongo_prod
+    volumes:
+      - ./mongo:/data/db

@@ -1,0 +1,29 @@
+FROM node:18-alpine3.15
+
+# Set working directory
+RUN mkdir -p /var/www/Proyecto_03-Transactions     # Creamos el directorio donde va a crear nuestra aplicacion dentro del linux
+WORKDIR /var/www/Proyecto_03-Transactions
+
+# Copiar el directorio y su contenido
+COPY . ./var/www/Proyecto_03-Transactions
+COPY package.json tsconfig.json tsconfig.build.json /var/www/Proyecto_03-Transactions/
+#RUN yarn install --prod
+#RUN yarn build
+RUN npm install     #Instalamos las dependencias
+RUN npm run:build   #Construimos el build
+
+
+# Dar permiso para ejecutar la applicación
+RUN adduser --disabled-password admin                # Creamos un usuario para que no use el default, y deshabilita el password
+RUN chown -R admin:admin /var/www/Proyecto_03-Transactions     # Se le da acceso al nuevo usuario al directorio creado. Es para solo poder modificar eso y no el SO.
+USER admin                            
+# En la linea de arriba seleccionamos con que usuario vamos a trabajar
+
+# Limpiar el caché
+RUN yarn cache clean --force
+
+EXPOSE 3000
+
+#Ejecutamos la aplicación.
+#CMD [ "yarn","start"]
+CMD [ "npm","start","prod"]

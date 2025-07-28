@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  db_mongo:
+    container_name: container_db_mongo
+    image: mongo:5.0.0
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo:/data/db
