@@ -98,15 +98,17 @@ export class TransactionsService {
 
   async findAllWithFilterResponse(
     paginationAndFilterTransactionsDto: PaginationAndFilterTransactionsDto,
-  ) :Promise<ResponseTransactionDto[]>  {
-    const transactions = await this.findAllWithFilter(paginationAndFilterTransactionsDto)
-        return plainToInstance(
-          ResponseTransactionDto,
-          transactions.map((transaction) => transaction.toObject()),
-          {
-            excludeExtraneousValues: true,
-          },
-        );
+  ): Promise<ResponseTransactionDto[]> {
+    const transactions = await this.findAllWithFilter(
+      paginationAndFilterTransactionsDto,
+    );
+    return plainToInstance(
+      ResponseTransactionDto,
+      transactions.map((transaction) => transaction.toObject()),
+      {
+        excludeExtraneousValues: true,
+      },
+    );
   }
 
   async findByTerm(term: string) {
@@ -114,14 +116,11 @@ export class TransactionsService {
 
     if (isValidObjectId(term)) {
       // Busca por id de transaccion
-      console.log(term);
       transaction = await this.transactionRepository.findById(term);
     } else {
       const user = await this.usersService.findOneResponse(term); // Busca el usuario por el email
-      console.log(user);
       if (user)
         transaction = await this.transactionRepository.findByUserId(user.id); // Busca transacciones por email
-      console.log(transaction);
     }
 
     if (!transaction)
@@ -179,7 +178,15 @@ export class TransactionsService {
 
   async create(createTransactionDto: CreateTransactionDto) {
     try {
-      return await this.transactionRepository.create(createTransactionDto);
+      const trasaction = await this.transactionRepository.create(createTransactionDto);
+      const trasactionResponse: ResponseTransactionDto = plainToInstance(
+        ResponseTransactionDto,
+        trasaction.toObject(),
+        {
+          excludeExtraneousValues: true,
+        },
+      );
+      return trasactionResponse;
     } catch (error) {
       this.handleDBErrors(error);
     }
@@ -195,7 +202,6 @@ export class TransactionsService {
 
   async remove(id: string) {
     try {
-      console.log(id)
       await this.transactionRepository.delete(id);
     } catch (error) {
       this.handleDBErrors(error);
