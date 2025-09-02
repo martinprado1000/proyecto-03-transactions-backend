@@ -1,15 +1,27 @@
 import { Expose, Transform } from 'class-transformer';
 import { Area, Categories, MeansOfPayment } from '../enums/transaction.enums';
 
-export class ResponseTransactionDto {
+class UserResponseDto {
+  @Expose({ name: 'id' })
+  @Transform(({ obj }) => obj._id?.toString())
+  _id: string;
 
+  @Expose()
+  email: string;
+}
+
+export class ResponseTransactionPopulateDto {
   @Expose()
   @Transform(({ obj }) => obj._id.toString())
   id: string;
 
   @Expose()
-  @Transform(({ obj }) => obj._id.toString())
+  @Transform(({ obj }) => obj.userId?._id?.toString() || obj.userId?.toString())
   userId: string;
+
+  @Expose()
+  @Transform(({ obj }) => obj.userId?.email || '') // Extrae el email
+  userEmail: string; // Nuevo campo para el email
 
   @Expose()
   description: string;

@@ -47,6 +47,51 @@ export class TansactionsController {
   //   );
   // }
 
+  // @Get()
+  // @ApiResponse({
+  //   status: 200,
+  //   description: 'Transactions list',
+  //   type: PaginationAndFilterTransactionsDto,
+  // })
+  // @ApiResponse({ status: 400, description: 'Bad request' })
+  // @ApiResponse({ status: 403, description: 'Forbidden, token related' })
+  // @ApiResponse({ status: 401, description: 'Unauthorized' })
+  // //@Auth()
+  // findAllWithFilter(
+  //   @Query()
+  //   paginationAndFilterTransactionsDto: PaginationAndFilterTransactionsDto,
+  // ) {
+  //   return this.trasactionsService.findAllWithFilterResponse(
+  //     paginationAndFilterTransactionsDto,
+  //   );
+  // }
+
+  @Get('findStatisticsAll')
+  @ApiResponse({
+    status: 200,
+    description: 'Transactions list',
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 403, description: 'Forbidden, token related' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  //@Auth()
+  findStatisticsAll() {
+    return this.trasactionsService.findStatisticsAll();
+  }
+
+  @Get('statisticsMonth')
+  @ApiResponse({
+    status: 200,
+    description: 'Transactions list',
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 403, description: 'Forbidden, token related' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  //@Auth()
+  findStatisticsMonth() {
+    return this.trasactionsService.findStatisticsMonth();
+  }
+
   @Get()
   @ApiResponse({
     status: 200,
@@ -57,11 +102,11 @@ export class TansactionsController {
   @ApiResponse({ status: 403, description: 'Forbidden, token related' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   //@Auth()
-  findAllWithFilter(
+  findAllWithFilterPopulate(
     @Query()
     paginationAndFilterTransactionsDto: PaginationAndFilterTransactionsDto,
   ) {
-    return this.trasactionsService.findAllWithFilterResponse(
+    return this.trasactionsService.findAllWithFilterResponsePopulate(
       paginationAndFilterTransactionsDto,
     );
   }
@@ -103,8 +148,9 @@ export class TansactionsController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden, token related' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Auth()
+  //@Auth()
   create(@Body() createTransactionDto: CreateTransactionDto) {
+    console.log(createTransactionDto);
     return this.trasactionsService.create(createTransactionDto);
   }
 
