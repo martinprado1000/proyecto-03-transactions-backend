@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Categories, MeansOfPayment, Area } from 'src/transactions/enums/transaction.enums';
 
@@ -18,6 +18,7 @@ export class Transaction extends Document {
     required: true,
     index: true,
     ref: 'User', // defino la relación userId como una referencia (ref: 'User') para luego usar populate
+    type: mongoose.Schema.Types.ObjectId,
   })
   userId: string; // Types.ObjectId;
 

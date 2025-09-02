@@ -4,10 +4,8 @@ import {
   IsDate,
   IsNotEmpty,
   MinLength,
-  IsEmail,
   IsOptional,
   IsEnum,
-  Matches,
   IsBoolean,
   IsMongoId,
   MaxLength,
@@ -15,6 +13,7 @@ import {
   Min,
   IsNumber,
   ValidateIf,
+  IsEmail,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { Types } from 'mongoose';
@@ -48,6 +47,20 @@ export class CreateTransactionDto {
     Types.ObjectId.isValid(value) ? value.toString() : value,
   )
   userId?: string;
+
+  //----- UserEmail ------------------------------
+  @ApiProperty({
+    description: 'User email',
+    type: 'string',
+    nullable: false,
+    maxLength: 100,
+    example: 'richard@gmail.com',
+  })
+  @IsEmail()
+  @IsNotEmpty()
+  @MaxLength(100)
+  @Transform(({ value }) => value.toLowerCase().trim())
+  userEmail: string;
 
   //----- Description ------------------------------
   @ApiProperty({

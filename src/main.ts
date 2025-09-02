@@ -18,12 +18,12 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe({
-    whitelist:true,
-    //forbidNonWhitelisted: true,
-    transform:true,
-    // transformOptions:{  
-    //   enableImplicitConversion: true,
-    // }
+    whitelist:true, // Elimina cualquier propiedad extra que venga en el request y que no esté definida en tu DTO.
+    //forbidNonWhitelisted: true, // En lugar de ignorar las propiedades extra, directamente lanza un error 400 (Bad Request)
+    transform:true, // Convierte los datos recibidos a una instancia de la clase DTO. Esto permite que los decoradores de validación (@IsInt(), @IsString(), etc.) modifiquen el tipo.
+    transformOptions:{  
+      enableImplicitConversion: true, // Si recibo ?limit=10 (strings), Nest automáticamente los transforma en números aunque no hayas puesto @Type(() => Number)
+    }
   })); 
 
   const config = new DocumentBuilder()
